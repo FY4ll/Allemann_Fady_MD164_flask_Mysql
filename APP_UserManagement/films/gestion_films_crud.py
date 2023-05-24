@@ -36,11 +36,18 @@ def film_add_wtf():
         try:
             if form_add_film.validate_on_submit():
                 nom_film_add = form_add_film.nom_film_add_wtf.data
+                prenom_personne_add = form_add_film.prenom_personne_add_wtf.data
+                date_personne_add = form_add_film.date_naissance_wtf.data
+                genre_personne_add = form_add_film.genre_personne_wtf.data
 
-                valeurs_insertion_dictionnaire = {"value_nom_film": nom_film_add}
+                valeurs_insertion_dictionnaire = {"value_nom_film": nom_film_add,
+                                                  "value_prenom_personne": prenom_personne_add,
+                                                  "value_date_personne": date_personne_add,
+                                                  "value_genre_personne": genre_personne_add}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_film = """INSERT INTO t_film (id_film,nom_film) VALUES (NULL,%(value_nom_film)s) """
+                strsql_insert_film = """INSERT INTO t_person (ID_Person,Last_Name,First_Name,Birth_date,gender)
+                 VALUES (NULL,%(value_nom_film)s,%(value_prenom_personne)s, %(value_date_personne)s,%(value_genre_personne)s ) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_film, valeurs_insertion_dictionnaire)
 
@@ -86,26 +93,23 @@ def film_update_wtf():
         if form_update_film.validate_on_submit():
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             nom_film_update = form_update_film.nom_film_update_wtf.data
-            duree_film_update = form_update_film.duree_film_update_wtf.data
+            pernom_personne_update = form_update_film.prenom_personne_update_wtf.data
             description_film_update = form_update_film.description_film_update_wtf.data
-            cover_link_film_update = form_update_film.cover_link_film_update_wtf.data
             datesortie_film_update = form_update_film.datesortie_film_update_wtf.data
 
             valeur_update_dictionnaire = {"value_id_film": id_film_update,
                                           "value_nom_film": nom_film_update,
-                                          "value_duree_film": duree_film_update,
+                                          "value_duree_film": pernom_personne_update,
                                           "value_description_film": description_film_update,
-                                          "value_cover_link_film": cover_link_film_update,
                                           "value_datesortie_film": datesortie_film_update
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_nom_film = """UPDATE t_film SET nom_film = %(value_nom_film)s,
-                                                            duree_film = %(value_duree_film)s,
-                                                            description_film = %(value_description_film)s,
-                                                            cover_link_film = %(value_cover_link_film)s,
-                                                            date_sortie_film = %(value_datesortie_film)s
-                                                            WHERE id_film = %(value_id_film)s"""
+            str_sql_update_nom_film = """UPDATE t_person SET Last_Name = %(value_nom_film)s,
+                                                            First_Name = %(pernom_personne_update)s,
+                                                            gender = %(value_description_film)s,
+                                                            Birth_date = %(value_datesortie_film)s
+                                                            WHERE ID_Person = %(value_id_film)s"""
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_nom_film, valeur_update_dictionnaire)
 
@@ -114,26 +118,22 @@ def film_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Afficher seulement le film modifié, "ASC" et l'"id_film_update"
-            return redirect(url_for('films_genres_afficher', id_film_sel=id_film_update))
+            return redirect(url_for('films_genres_afficher', ID_Person_sel=id_film_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_film" et "intitule_genre" de la "t_genre"
-            str_sql_id_film = "SELECT * FROM t_film WHERE id_film = %(value_id_film)s"
+            str_sql_id_film = "SELECT * FROM t_person WHERE ID_Person = %(value_id_film)s"
             valeur_select_dictionnaire = {"value_id_film": id_film_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_film, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_film = mybd_conn.fetchone()
-            print("data_film ", data_film, " type ", type(data_film), " genre ",
-                  data_film["nom_film"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "film_update_wtf.html"
-            form_update_film.nom_film_update_wtf.data = data_film["nom_film"]
-            form_update_film.duree_film_update_wtf.data = data_film["duree_film"]
+            form_update_film.nom_film_update_wtf.data = data_film["Last_Name"]
+            form_update_film.duree_film_update_wtf.data = data_film["First_Name"]
             # Debug simple pour contrôler la valeur dans la console "run" de PyCharm
-            print(f" duree film  ", data_film["duree_film"], "  type ", type(data_film["duree_film"]))
-            form_update_film.description_film_update_wtf.data = data_film["description_film"]
-            form_update_film.cover_link_film_update_wtf.data = data_film["cover_link_film"]
-            form_update_film.datesortie_film_update_wtf.data = data_film["date_sortie_film"]
+            form_update_film.description_film_update_wtf.data = data_film["gender"]
+            form_update_film.datesortie_film_update_wtf.data = data_film["Birth_date"]
 
     except Exception as Exception_film_update_wtf:
         raise ExceptionFilmUpdateWtf(f"fichier : {Path(__file__).name}  ;  "

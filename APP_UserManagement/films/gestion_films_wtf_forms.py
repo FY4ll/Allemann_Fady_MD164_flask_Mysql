@@ -4,7 +4,7 @@ Auteur : OM 2022.04.11
 
 """
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, DateField
+from wtforms import StringField, IntegerField, DateField, SelectField
 from wtforms import SubmitField
 from wtforms.validators import Length, InputRequired, NumberRange, DataRequired
 from wtforms.validators import Regexp
@@ -24,8 +24,21 @@ class FormWTFAddFilm(FlaskForm):
                                                                               "d'espace à double, de double "
                                                                               "apostrophe, de double trait union")
                                                                ])
+    prenom_personne_add_wtf = StringField("prénom de la personne ",
+                                          validators=[Length(min=2, max=2000, message="min 2 max 20"),
+                                                      Regexp(nom_film_regexp,
+                                                             message="Pas de chiffres, de caractères "
+                                                                     "spéciaux, "
+                                                                     "d'espace à double, de double "
+                                                                     "apostrophe, de double trait union")
+                                                      ])
+    date_naissance_wtf = DateField("Date de naissance",
+                                   format="%Y-%m-%d",
+                                   )
+    genres_choices = [("H", "Homme"), ("F", "Femme"), ("X", "Autres")]
+    genre_personne_wtf = SelectField("Genre", choices=genres_choices)
 
-    submit = SubmitField("Enregistrer film")
+    submit = SubmitField("Enregistrer la personne")
 
 
 class FormWTFUpdateFilm(FlaskForm):
@@ -34,21 +47,20 @@ class FormWTFUpdateFilm(FlaskForm):
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
 
-    nom_film_update_wtf = StringField("Clavioter le titre", widget=TextArea())
-    duree_film_update_wtf = IntegerField("Durée du film (minutes)", validators=[NumberRange(min=1, max=5000,
-                                                                                            message=u"Min %(min)d et "
-                                                                                                    u"max %(max)d "
-                                                                                                    u"Selon Wikipédia "
-                                                                                                    u"L'Incendie du "
-                                                                                                    u"monastère du "
-                                                                                                    u"Lotus rouge "
-                                                                                                    u"durée 1620 "
-                                                                                                    u"min")])
+    nom_film_update_wtf = StringField("Nom de famille", widget=TextArea())
+    prenom_personne_update_wtf = IntegerField("Prénom de la personne", validators=[NumberRange(min=1, max=5000,
+                                                                                               message=u"Min %(min)d et "
+                                                                                                       u"max %(max)d "
+                                                                                                       u"Selon Wikipédia "
+                                                                                                       u"L'Incendie du "
+                                                                                                       u"monastère du "
+                                                                                                       u"Lotus rouge "
+                                                                                                       u"durée 1620 "
+                                                                                                       u"min")])
 
-    description_film_update_wtf = StringField("Description du film ", widget=TextArea())
-    cover_link_film_update_wtf = StringField("Lien de l'affiche du film ", widget=TextArea())
-    datesortie_film_update_wtf = DateField("Date de sortie du film", validators=[InputRequired("Date obligatoire"),
-                                                                                 DataRequired("Date non valide")])
+    description_film_update_wtf = StringField("Sexe de la personne", widget=TextArea())
+    datesortie_film_update_wtf = DateField("Date de naiscance", validators=[InputRequired("Date obligatoire"),
+                                                                            DataRequired("Date non valide")])
     submit = SubmitField("Update film")
 
 
