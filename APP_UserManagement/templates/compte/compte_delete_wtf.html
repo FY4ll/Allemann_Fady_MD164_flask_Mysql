@@ -20,7 +20,16 @@
                     <thead>
                     <tr>
                         <th>
-                            Personne
+                            ID
+                        </th>
+                        <th>
+                            Propriétaire(prénom)
+                        </th>
+                        <th>
+                            Username
+                        </th>
+                        <th>
+                            Password
                         </th>
                     </tr>
                     </thead>
@@ -28,7 +37,16 @@
                     <tbody>
                     <tr>
                         <td>
+                            {{ row.id_personne_avoir_compte }}
+                        </td>
+                        <td>
                             {{ row.First_name }}
+                        </td>
+                        <td>
+                            {{ row.User_name}}
+                        </td>
+                        <td>
+                            {{ row.password}}
                         </td>
                     </tr>
                     </tbody>
@@ -39,9 +57,9 @@
 
                 <div class="form-group">
                     <p>
-                        {{ form_delete.nom_genre_delete_wtf.label }}<br>
-                        {{ form_delete.nom_genre_delete_wtf(size=32, readonly=true) }}<br>
-                        {% for error in form_delete.nom_genre_delete_wtf.errors %}
+                        {{ form_delete.nom_compte_delete_wtf.label }}<br>
+                        {{ form_delete.nom_compte_delete_wtf(size=32, readonly=true) }}<br>
+                        {% for error in form_delete.nom_compte_delete_wtf.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </p>
