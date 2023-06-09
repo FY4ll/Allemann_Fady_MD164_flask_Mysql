@@ -15,10 +15,10 @@
                         Id
                     </th>
                     <th class="align-middle">
-                        Nom D'utilisateur
+                        Departement nom
                     </th>
                     <th class="align-middle">
-                        Mot de passe
+                        type
                     </th>
                 </tr>
                 </thead>
@@ -28,25 +28,26 @@
                 <tbody>
                 <tr>
                     <td class="align-middle">
-                        {{ row.ID_account }}
+                        {{ row.ID_departement }}
                     </td>
                     <td class="align-middle">
-                        {{ row.User_name }}
+                        {{ row.nom_departement }}
                     </td>
                     <td class="align-middle">
-                        {{ row.password }}
+                        {{ row.type_departement }}
                     </td>
                     <td class="text-center" class="align-middle">
-                        <a class="btn btn-primary" href="{{ url_for('compte_ajouter_wtf') }}" role="button">Ajouter</a>
+                        <a class="btn btn-primary" href="{{ url_for('departement_ajouter_wtf') }}"
+                           role="button">Ajouter</a>
                     </td>
                     <td class="text-center" class="align-middle">
                         <a class="btn btn-warning"
-                           href="{{ url_for('compte_update_wtf', id_genre_btn_edit_html=row.ID_account) }}"
+                           href="{{ url_for('departement_update_wtf', id_genre_btn_edit_html=row.ID_account) }}"
                            role="button">Edit</a>
                     </td>
                     <td class="text-center" class="align-middle">
                         <a class="btn btn-danger"
-                           href="{{ url_for('compte_delete_wtf', id_genre_btn_delete_html=row.ID_account) }}"
+                           href="{{ url_for('departement_delete_wtf', id_genre_btn_delete_html=row.ID_account) }}"
                            role="button">Delete</a>
                     </td>
                 </tr>

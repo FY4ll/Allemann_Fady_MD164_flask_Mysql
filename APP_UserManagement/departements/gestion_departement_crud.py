@@ -32,7 +32,7 @@ def departement_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT ID_account, User_name, password FROM t_user_account order by ID_account DESC"""
+                    strsql_genres_afficher = """SELECT ID_departement, nom_departement, type_departement FROM t_departement order by ID_departement DESC"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -41,11 +41,11 @@ def departement_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT ID_account, User_name, password FROM t_user_account order by ID_account DESC"""
+                    strsql_genres_afficher = """SELECT ID_departement, nom_departement, type_departement FROM t_departement order by ID_departement DESC"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT ID_account, User_name, password FROM t_user_account order by ID_account DESC"""
+                    strsql_genres_afficher = """SELECT ID_departement, nom_departement, type_departement FROM t_departement order by ID_departement DESC"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -104,7 +104,7 @@ def departement_ajouter_wtf():
                 valeurs_insertion_dictionnaire = {"value_intitule_genre": name_genre}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO t_user_account (ID_account,User_name, password) VALUES (NULL,%(value_intitule_genre)s, 1) """
+                strsql_insert_genre = """INSERT INTO t_departement (ID_departement,nom_departement, type_departement) VALUES (NULL,%(value_intitule_genre)s, 1) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 
@@ -165,8 +165,7 @@ def departement_update_wtf():
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_user_account SET User_name = %(value_name_genre)s,
-                                              password = %(value_compte_password)s WHERE ID_account = %(value_id_genre)s """
+            str_sql_update_intitulegenre = """UPDATE t_departemnt SET nom_departement = %(value_name_genre)s, WHERE ID_account = %(value_id_genre)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
