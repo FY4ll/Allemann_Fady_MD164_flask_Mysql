@@ -89,25 +89,26 @@ def film_update_wtf():
     # Objet formulaire pour l'UPDATE
     form_update_film = FormWTFUpdateFilm()
     try:
-        print(" on submit ", form_update_film.validate_on_submit())
-        if form_update_film.validate_on_submit():
+        # 2023.05.14 OM S'il y a des listes déroulantes dans le formulaire
+        # La validation pose quelques problèmes
+        if request.method == "POST" and form_update_film.submit.data:
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             nom_film_update = form_update_film.nom_film_update_wtf.data
-            pernom_personne_update = form_update_film.prenom_personne_update_wtf.data
             description_film_update = form_update_film.description_film_update_wtf.data
+            cover_link_film_update = form_update_film.cover_link_film_update_wtf.data
             datesortie_film_update = form_update_film.datesortie_film_update_wtf.data
 
             valeur_update_dictionnaire = {"value_id_film": id_film_update,
                                           "value_nom_film": nom_film_update,
-                                          "value_duree_film": pernom_personne_update,
                                           "value_description_film": description_film_update,
+                                          "value_cover_link_film": cover_link_film_update,
                                           "value_datesortie_film": datesortie_film_update
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_nom_film = """UPDATE t_person SET Last_Name = %(value_nom_film)s,
-                                                            First_Name = %(pernom_personne_update)s,
-                                                            gender = %(value_description_film)s,
+            str_sql_update_nom_film = """UPDATE t_person SET First_Name = %(value_nom_film)s,
+                                                            Last_name = %(value_description_film)s,
+                                                            gender = %(value_cover_link_film)s,
                                                             Birth_date = %(value_datesortie_film)s
                                                             WHERE ID_Person = %(value_id_film)s"""
             with DBconnection() as mconn_bd:
@@ -118,7 +119,7 @@ def film_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Afficher seulement le film modifié, "ASC" et l'"id_film_update"
-            return redirect(url_for('films_genres_afficher', ID_Person_sel=id_film_update))
+            return redirect(url_for('films_genres_afficher', id_film_sel=id_film_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_film" et "intitule_genre" de la "t_genre"
             str_sql_id_film = "SELECT * FROM t_person WHERE ID_Person = %(value_id_film)s"
@@ -127,12 +128,14 @@ def film_update_wtf():
                 mybd_conn.execute(str_sql_id_film, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_film = mybd_conn.fetchone()
+            print("data_film ", data_film, " type ", type(data_film), " gender ",
+                  data_film["First_Name"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "film_update_wtf.html"
-            form_update_film.nom_film_update_wtf.data = data_film["Last_Name"]
-            form_update_film.duree_film_update_wtf.data = data_film["First_Name"]
+            form_update_film.nom_film_update_wtf.data = data_film["First_Name"]
             # Debug simple pour contrôler la valeur dans la console "run" de PyCharm
-            form_update_film.description_film_update_wtf.data = data_film["gender"]
+            form_update_film.description_film_update_wtf.data = data_film["Last_name"]
+            form_update_film.cover_link_film_update_wtf.data = data_film["gender"]
             form_update_film.datesortie_film_update_wtf.data = data_film["Birth_date"]
 
     except Exception as Exception_film_update_wtf:
@@ -141,7 +144,6 @@ def film_update_wtf():
                                      f"{Exception_film_update_wtf}")
 
     return render_template("films/film_update_wtf.html", form_update_film=form_update_film)
-
 
 """Effacer(delete) un film qui a été sélectionné dans le formulaire "films_genres_afficher.html"
 Auteur : OM 2022.04.11
@@ -187,8 +189,8 @@ def film_delete_wtf():
             valeur_delete_dictionnaire = {"value_id_film": id_film_delete}
             print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-            str_sql_delete_fk_film_genre = """DELETE FROM t_genre_film WHERE fk_film = %(value_id_film)s"""
-            str_sql_delete_film = """DELETE FROM t_film WHERE id_film = %(value_id_film)s"""
+            str_sql_delete_fk_film_genre = """DELETE FROM t_personne_avoir_compte WHERE fk_Personne = %(value_id_film)s"""
+            str_sql_delete_film = """DELETE FROM t_person WHERE ID_Person = %(value_id_film)s"""
             # Manière brutale d'effacer d'abord la "fk_film", même si elle n'existe pas dans la "t_genre_film"
             # Ensuite on peut effacer le film vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
             with DBconnection() as mconn_bd:
@@ -205,7 +207,7 @@ def film_delete_wtf():
             print(id_film_delete, type(id_film_delete))
 
             # Requête qui affiche le film qui doit être efffacé.
-            str_sql_genres_films_delete = """SELECT * FROM t_film WHERE id_film = %(value_id_film)s"""
+            str_sql_genres_films_delete = """SELECT * FROM t_person WHERE ID_Person = %(value_id_film)s"""
 
             with DBconnection() as mydb_conn:
                 mydb_conn.execute(str_sql_genres_films_delete, valeur_select_dictionnaire)

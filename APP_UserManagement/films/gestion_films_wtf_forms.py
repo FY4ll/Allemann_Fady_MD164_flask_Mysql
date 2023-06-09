@@ -4,9 +4,9 @@ Auteur : OM 2022.04.11
 
 """
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, DateField, SelectField
+from wtforms import StringField, DateField, SelectField
 from wtforms import SubmitField
-from wtforms.validators import Length, InputRequired, NumberRange, DataRequired
+from wtforms.validators import Length, InputRequired, DataRequired
 from wtforms.validators import Regexp
 from wtforms.widgets import TextArea
 
@@ -47,21 +47,13 @@ class FormWTFUpdateFilm(FlaskForm):
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
 
-    nom_film_update_wtf = StringField("Nom de famille", widget=TextArea())
-    prenom_personne_update_wtf = IntegerField("Prénom de la personne", validators=[NumberRange(min=1, max=5000,
-                                                                                               message=u"Min %(min)d et "
-                                                                                                       u"max %(max)d "
-                                                                                                       u"Selon Wikipédia "
-                                                                                                       u"L'Incendie du "
-                                                                                                       u"monastère du "
-                                                                                                       u"Lotus rouge "
-                                                                                                       u"durée 1620 "
-                                                                                                       u"min")])
-
-    description_film_update_wtf = StringField("Sexe de la personne", widget=TextArea())
-    datesortie_film_update_wtf = DateField("Date de naiscance", validators=[InputRequired("Date obligatoire"),
+    nom_film_update_wtf = StringField("Veuillez insere un prénom", widget=TextArea())
+    description_film_update_wtf = StringField("Veuillez insere un nom ", widget=TextArea())
+    genres_choices = [("H", "Homme"), ("F", "Femme"), ("X", "Autres")]
+    cover_link_film_update_wtf = SelectField("genre de la personne", choices=genres_choices)
+    datesortie_film_update_wtf = DateField("Date de naiscence", validators=[InputRequired("Date obligatoire"),
                                                                             DataRequired("Date non valide")])
-    submit = SubmitField("Update film")
+    submit = SubmitField("Update personne")
 
 
 class FormWTFDeleteFilm(FlaskForm):
