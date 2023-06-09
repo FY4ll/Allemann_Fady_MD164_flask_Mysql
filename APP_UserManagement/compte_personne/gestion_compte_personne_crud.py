@@ -26,15 +26,15 @@ from APP_UserManagement.erreurs.exceptions import *
 """
 
 
-@app.route("/films_genres_afficher/<int:id_film_sel>", methods=['GET', 'POST'])
-def films_genres_afficher(id_film_sel):
+@app.route("/compte_personne_afficher/<int:id_film_sel>", methods=['GET', 'POST'])
+def compte_personne_afficher(id_film_sel):
     print(" films_genres_afficher id_film_sel ", id_film_sel)
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """Select ID_Person, Last_name , Birth_date,gender, Role_name from t_person
-inner join t_personne_avoir_role on t_person.ID_Person = t_personne_avoir_role.fk_Personne
-INNER JOIN t_role tr on t_personne_avoir_role.fk_role = tr.ID_role"""
+                strsql_genres_films_afficher_data = """Select password,ID_Person, Last_name , Birth_date,gender, User_name from t_person
+inner join t_personne_avoir_compte on t_person.ID_Person = t_personne_avoir_compte.fk_personne
+INNER JOIN t_user_account tr on t_personne_avoir_compte.fk_compte = tr.ID_account"""
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
                     # Sinon le paramètre représente la valeur de l'id du film
@@ -62,12 +62,13 @@ INNER JOIN t_role tr on t_personne_avoir_role.fk_role = tr.ID_role"""
                     flash(f"Données films et genres affichés !!", "success")
 
         except Exception as Exception_films_genres_afficher:
-            raise ExceptionFilmsGenresAfficher(f"fichier : {Path(__file__).name}  ;  {films_genres_afficher.__name__} ;"
-                                               f"{Exception_films_genres_afficher}")
+            raise ExceptionFilmsGenresAfficher(
+                f"fichier : {Path(__file__).name}  ;  {compte_personne_afficher.__name__} ;"
+                f"{Exception_films_genres_afficher}")
 
     print("films_genres_afficher  ", data_genres_films_afficher)
     # Envoie la page "HTML" au serveur.
-    return render_template("films_genres/films_genres_afficher.html", data=data_genres_films_afficher)
+    return render_template("compte_personne/compte_personne_afficher.html", data=data_genres_films_afficher)
 
 
 """
@@ -86,8 +87,8 @@ INNER JOIN t_role tr on t_personne_avoir_role.fk_role = tr.ID_role"""
 """
 
 
-@app.route("/edit_genre_film_selected", methods=['GET', 'POST'])
-def edit_genre_film_selected():
+@app.route("/edit_compte_personne_afficher_selected", methods=['GET', 'POST'])
+def edit_compte_personne_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
@@ -151,10 +152,10 @@ def edit_genre_film_selected():
 
         except Exception as Exception_edit_genre_film_selected:
             raise ExceptionEditGenreFilmSelected(f"fichier : {Path(__file__).name}  ;  "
-                                                 f"{edit_genre_film_selected.__name__} ; "
+                                                 f"{edit_compte_personne_selected.__name__} ; "
                                                  f"{Exception_edit_genre_film_selected}")
 
-    return render_template("films_genres/films_genres_modifier_tags_dropbox.html",
+    return render_template("compte_personne/compte_personne_modifier_tags_dropbox.html",
                            data_genres=data_genres_all,
                            data_film_selected=data_genre_film_selected,
                            data_genres_attribues=data_genres_films_attribues,
@@ -175,8 +176,8 @@ def edit_genre_film_selected():
 """
 
 
-@app.route("/update_genre_film_selected", methods=['GET', 'POST'])
-def update_genre_film_selected():
+@app.route("/update_compte_personne_afficher_selected", methods=['GET', 'POST'])
+def update_compte_personne_selected():
     if request.method == "POST":
         try:
             # Récupère l'id du film sélectionné
@@ -252,12 +253,12 @@ def update_genre_film_selected():
 
         except Exception as Exception_update_genre_film_selected:
             raise ExceptionUpdateGenreFilmSelected(f"fichier : {Path(__file__).name}  ;  "
-                                                   f"{update_genre_film_selected.__name__} ; "
+                                                   f"{update_compte_personne_selected.__name__} ; "
                                                    f"{Exception_update_genre_film_selected}")
 
     # Après cette mise à jour de la table intermédiaire "t_genre_film",
     # on affiche les films et le(urs) genre(s) associé(s).
-    return redirect(url_for('films_genres_afficher', id_film_sel=id_film_selected))
+    return redirect(url_for('compte_personne/compte_personne_afficher', id_film_sel=id_film_selected))
 
 
 """

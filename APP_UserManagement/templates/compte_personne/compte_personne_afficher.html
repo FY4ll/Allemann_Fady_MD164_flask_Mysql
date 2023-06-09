@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} Afficher FILMS {% endblock %}
+{% block body %}
+<div class="container">
+	<div class="col-md-12">
+		<table class="table table-responsive-sm">
+			{% if data %}
+			<thead>
+			<tr>
+				<th class="">
+					Id
+				</th>
+				<th class="">
+					Username
+				</th>
+				<th class="">
+					Propriètaire(nom)
+				</th>
+				<th class="">
+					Password
+				</th>
+			</tr>
+			</thead>
+			{% endif %}
+			{% for row in data %}
+			<tbody>
+			<tr>
+				<th class="align-middle">
+					{{ row.ID_Person }}
+				</th>
+				<th class="align-middle">
+					{{ row.User_name }}
+				</th>
+				<th class="align-middle">
+					{{ row.Last_name }}
+				</th>
+				<th class="align-middle">
+					{{ row.password }}
+				</th>
+			</tr>
+			</tbody>
+			{% else %}
+			<tbody>
+			<tr>
+				<td>
+					Aucun film.
+				</td>
+				<td>
+					<a class="btn btn-primary" href="{{ url_for('avertissement_sympa_pour_geeks') }}"
+					   role="button">Add</a>
+				</td>
+			</tr>
+			</tbody>
+			{% endfor %}
+
+		</table>
+	</div>
+</div>
+{% endblock %}

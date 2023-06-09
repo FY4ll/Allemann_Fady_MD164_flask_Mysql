@@ -1,12 +1,12 @@
 """
-    Fichier : gestion_genres_wtf_forms.py
+    Fichier : gestion_compte_wtf_forms.py
     Auteur : OM 2021.03.22
     Gestion des formulaires avec WTF
 """
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField
+from wtforms import StringField
 from wtforms import SubmitField
-from wtforms.validators import Length, InputRequired, DataRequired
+from wtforms.validators import Length
 from wtforms.validators import Regexp
 
 
