@@ -35,7 +35,7 @@ def films_genres_afficher(id_film_sel):
                 strsql_genres_films_afficher_data = """Select ID_Person, Last_name, User_name, Birth_date,gender, Role_name from t_person
 inner join t_personne_avoir_compte on t_person.ID_Person = t_personne_avoir_compte.fk_Personne
 inner join user_account on t_personne_avoir_compte.fk_Personne = user_account.ID_account
-INNER JOIN t_role tr on t_personne_avoir_compte.fk_role = tr.ID_role;"""
+INNER JOIN t_role tr on t_personne_avoir_compte.fk_role = tr.ID_role"""
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
                     # Sinon le paramètre représente la valeur de l'id du film
@@ -45,7 +45,7 @@ INNER JOIN t_role tr on t_personne_avoir_compte.fk_role = tr.ID_role;"""
                     valeur_id_film_selected_dictionnaire = {"value_id_film_selected": id_film_sel}
                     # En MySql l'instruction HAVING fonctionne comme un WHERE... mais doit être associée à un GROUP BY
                     # L'opérateur += permet de concaténer une nouvelle valeur à la valeur de gauche préalablement définie.
-                    strsql_genres_films_afficher_data += """ HAVING id_film= %(value_id_film_selected)s"""
+                    strsql_genres_films_afficher_data += """ HAVING ID_Person= %(value_id_film_selected)s"""
 
                     mc_afficher.execute(strsql_genres_films_afficher_data, valeur_id_film_selected_dictionnaire)
 
@@ -161,6 +161,7 @@ def edit_genre_film_selected():
                            data_genres_attribues=data_genres_films_attribues,
                            data_genres_non_attribues=data_genres_films_non_attribues)
 
+
 """
     nom: update_genre_film_selected
 
@@ -219,7 +220,7 @@ def update_genre_film_selected():
 
             # SQL pour insérer une nouvelle association entre
             # "fk_film"/"id_film" et "fk_genre"/"id_genre" dans la "t_genre_film"
-            strsql_insert_genre_film = """INSERT INTO t_personne_avoir_compte (fk_role, fk_Personne)
+            strsql_insert_genre_film = """INSERT INTO t_personne_avoir_compte (id_personne_avoir_compte,fk_role, fk_Personne)
                                                     VALUES (NULL, %(value_fk_genre)s, %(value_fk_film)s)"""
 
             # SQL pour effacer une (des) association(s) existantes entre "id_film" et "id_genre" dans la "t_genre_film"
@@ -274,20 +275,20 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
     print("valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
 
-        strsql_film_selected = """Select ID_Person, Last_name, User_name, Birth_date,gender, Role_name from t_person
-inner join t_personne_avoir_compte on t_person.ID_Person = t_personne_avoir_compte.fk_Personne
-inner join user_account on t_personne_avoir_compte.fk_Personne = user_account.ID_account
-INNER JOIN t_role tr on t_personne_avoir_compte.fk_role = tr.ID_role;"""
+        strsql_film_selected = """SELECT ID_Person, First_name, Last_name, Birth_date, gender, GROUP_CONCAT(ID_role) as GenresFilms FROM t_personne_avoir_compte
+                                        INNER JOIN t_person ON t_person.ID_Person = t_personne_avoir_compte.fk_Personne
+                                        INNER JOIN t_role ON t_role.ID_role = t_personne_avoir_compte.fk_role
+                                        WHERE ID_Person = %(value_id_film_selected)s"""
 
-        strsql_genres_films_non_attribues = """SELECT t_role.ID_role, Role_name FROM t_role WHERE t_role.ID_role not in(SELECT t_personne_avoir_compte.fk_role as idrolevide FROM t_personne_avoir_compte
+        strsql_genres_films_non_attribues = """SELECT ID_role, Role_name FROM t_role WHERE ID_role not in(SELECT ID_role as idGenresFilms FROM t_personne_avoir_compte
                                                     INNER JOIN t_person ON t_person.ID_Person = t_personne_avoir_compte.fk_Personne
-                                                    INNER JOIN t_role ON t_role.ID_role = t_personne_avoir_compte.fk_role)
-                                                    WHERE fk_Personne = %(value_id_film_selected)s"""
+                                                    INNER JOIN t_role ON t_role.ID_role = t_personne_avoir_compte.fk_role
+                                                    WHERE ID_Person = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT fk_personne, fk_role, Role_name FROM t_personne_avoir_compte
+        strsql_genres_films_attribues = """SELECT ID_Person, ID_role, Role_name FROM t_personne_avoir_compte
                                             INNER JOIN t_person ON t_person.ID_Person = t_personne_avoir_compte.fk_Personne
                                             INNER JOIN t_role ON t_role.ID_role = t_personne_avoir_compte.fk_role
-                                            WHERE fk_Personne = %(value_id_film_selected)s"""
+                                            WHERE ID_Person = %(value_id_film_selected)s"""
 
         # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
         with DBconnection() as mc_afficher:
