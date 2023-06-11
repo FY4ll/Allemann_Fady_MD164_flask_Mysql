@@ -32,7 +32,7 @@ def compte_personne_afficher(id_film_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """Select password,ID_Person, Last_name , Birth_date,gender, User_name from t_person
+                strsql_genres_films_afficher_data = """Select password,ID_Person, Last_name ,gender, User_name from t_person
 inner join t_personne_avoir_compte on t_person.ID_Person = t_personne_avoir_compte.fk_personne
 INNER JOIN t_user_account tr on t_personne_avoir_compte.fk_compte = tr.ID_account"""
                 if id_film_sel == 0:

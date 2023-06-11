@@ -9,6 +9,7 @@ from flask import request
 from flask import session
 from flask import url_for
 
+
 from APP_UserManagement.database.database_tools import DBconnection
 from APP_UserManagement.erreurs.exceptions import *
 
