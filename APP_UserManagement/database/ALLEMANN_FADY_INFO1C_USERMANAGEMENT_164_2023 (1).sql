@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `ALLEMANN_FADY_INFO1C_USERMANAGEMENT_164_2023` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `ALLEMANN_FADY_INFO1C_USERMANAGEMENT_164_2023`;
+CREATE DATABASE  IF NOT EXISTS `allemann_fady_info1c_usermanagement_164_2023` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `allemann_fady_info1c_usermanagement_164_2023`;
 -- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
 --
--- Host: localhost    Database: app_usermanagement
+-- Host: localhost    Database: allemann_fady_info1c_usermanagement_164_2023
 -- ------------------------------------------------------
 -- Server version	8.0.33
 
@@ -178,7 +178,7 @@ INSERT INTO `t_user_account` VALUES (1,'Michel123','a'),(2,'F4YLL','eheheh'),(3,
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'app_usermanagement'
+-- Dumping routines for database 'allemann_fady_info1c_usermanagement_164_2023'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -190,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-11 20:46:31
+-- Dump completed on 2023-06-11 21:12:28

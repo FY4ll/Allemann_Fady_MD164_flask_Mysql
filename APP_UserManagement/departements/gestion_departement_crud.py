@@ -9,8 +9,8 @@ from flask import request
 from flask import session
 from flask import url_for
 
-from APP_UserManagement.comptes.gestion_compte_wtf_forms import FormWTFAjouterCompte, FormWTFUpdateCompte, \
-    FormWTFDeleteCompte
+from APP_UserManagement.departements.gestion_departement_wtf_forms import FormWTFAjouterdepartement, FormWTFUpdatedepartement, \
+    FormWTFDeletedepartement
 from APP_UserManagement.database.database_tools import DBconnection
 from APP_UserManagement.erreurs.exceptions import *
 
@@ -95,7 +95,7 @@ def departement_afficher(order_by, id_genre_sel):
 
 @app.route("/departement_ajouter", methods=['GET', 'POST'])
 def departement_ajouter_wtf():
-    form = FormWTFAjouterCompte()
+    form = FormWTFAjouterdepartement()
     if request.method == "POST":
         try:
             if form.validate_on_submit():
@@ -148,7 +148,7 @@ def departement_update_wtf():
     id_genre_update = request.values['id_genre_btn_edit_html']
 
     # Objet formulaire pour l'UPDATE
-    form_update = FormWTFUpdateCompte()
+    form_update = FormWTFUpdatedepartement()
     try:
         print(" on submit ", form_update.validate_on_submit())
         if form_update.validate_on_submit():
@@ -177,8 +177,8 @@ def departement_update_wtf():
             return redirect(url_for('departement_afficher', order_by="ASC", id_genre_sel=id_genre_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT ID_account, User_name, password FROM t_user_account " \
-                               "WHERE ID_account = %(value_id_genre)s"
+            str_sql_id_genre = "SELECT ID_departement, nom_departement, type_departement FROM t_user_account " \
+                               "WHERE ID_departement = %(value_id_genre)s"
             valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
@@ -222,7 +222,7 @@ def departement_delete_wtf():
     id_genre_delete = request.values['id_genre_btn_delete_html']
 
     # Objet formulaire pour effacer le genre sélectionné.
-    form_delete = FormWTFDeleteCompte()
+    form_delete = FormWTFDeletedepartement()
     try:
         print(" on submit ", form_delete.validate_on_submit())
         if request.method == "POST" and form_delete.validate_on_submit():
