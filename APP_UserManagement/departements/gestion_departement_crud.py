@@ -9,8 +9,6 @@ from flask import request
 from flask import session
 from flask import url_for
 
-from APP_UserManagement.departements.gestion_departement_wtf_forms import FormWTFAjouterdepartement, FormWTFUpdatedepartement, \
-    FormWTFDeletedepartement
 from APP_UserManagement.database.database_tools import DBconnection
 from APP_UserManagement.erreurs.exceptions import *
 
@@ -165,7 +163,7 @@ def departement_update_wtf():
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_departemnt SET nom_departement = %(value_name_genre)s, WHERE ID_account = %(value_id_genre)s """
+            str_sql_update_intitulegenre = """UPDATE t_departement SET nom_departement = %(value_name_genre)s, WHERE ID_departement = %(value_id_genre)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -177,7 +175,7 @@ def departement_update_wtf():
             return redirect(url_for('departement_afficher', order_by="ASC", id_genre_sel=id_genre_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT ID_departement, nom_departement, type_departement FROM t_user_account " \
+            str_sql_id_genre = "SELECT ID_departement, nom_departement, type_departement FROM t_departement " \
                                "WHERE ID_departement = %(value_id_genre)s"
             valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
             with DBconnection() as mybd_conn:
@@ -185,11 +183,11 @@ def departement_update_wtf():
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_nom_genre = mybd_conn.fetchone()
             print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                  data_nom_genre["User_name"])
+                  data_nom_genre["nom_departement"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
-            form_update.nom_compte_update_wtf.data = data_nom_genre["User_name"]
-            form_update.password_compte_update_wtf.data = data_nom_genre["password"]
+            form_update.nom_compte_update_wtf.data = data_nom_genre["nom_departement"]
+            form_update.password_compte_update_wtf.data = data_nom_genre["type_departement"]
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
