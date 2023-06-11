@@ -1,20 +1,38 @@
 # Module 164 2023.03.25 USER Managment app
 
+
+
+
 liens dépot github: https://github.com/FY4ll/Allemann_Fady_MD164_flask_Mysql
+
+
+
 
 ## Database: allemann_fady_info1c_usermanagement_164_2023
 
 
+
+
+
+
 ## Lancement du projet
 
-1. veuillez d'abord aller dans requirement.txt pour télécharger module nécéssaire au bon lancement du projet
-2. puis ensuite rendez-vous dans database/ALLEMANN_FADY_INFO1C_USERMANAGER_164_2023.SQL et lancer le fichier 
-    ce qui vous permetra de récuprérer toute la base de données
-    si vous obtener une erreur comme quoi la base de donnée n'existe pas veuillez appuillez sur "skip warning"
-3. Lancer "run_mon_app.py" qui se trouve dans le dossier APP_UserManagement ce qui devrait lancer l'application 
 
 
 
+1. Veuillez d'abord aller dans requirement.txt pour télécharger les modules nécessaires au bon lancement du projet
+
+
+2. Puis ensuite rendez-vous dans database/ALLEMANN_FADY_INFO1C_USERMANAGER_164_2023.SQL et lancer le fichier
+
+
+Ce qui vous permettra de récupérer toute la base de données
+
+
+Si vous obtenez une erreur comme quoi la base de données n'existe pas veuillez appuierez sur "skip warning"
+
+
+3. Lancer "run_mon_app.py" qui se trouve dans le dossier APP_UserManagement ce qui devrait lancer l'application
 
 
 
