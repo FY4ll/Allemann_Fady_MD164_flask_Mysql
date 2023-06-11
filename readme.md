@@ -1,5 +1,6 @@
 # Module 164 2023.03.25 USER Managment app
 
+liens dépot github: https://github.com/FY4ll/Allemann_Fady_MD164_flask_Mysql
 
 ## Database: allemann_fady_info1c_usermanagement_164_2023
 
