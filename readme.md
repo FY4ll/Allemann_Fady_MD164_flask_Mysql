@@ -31,8 +31,9 @@ Ce qui vous permettra de récupérer toute la base de données
 
 Si vous obtenez une erreur comme quoi la base de données n'existe pas veuillez appuierez sur "skip warning"
 
+3.Lancer importationDump dabs le dossier database puis le fichier texte. 
 
-3. Lancer "run_mon_app.py" qui se trouve dans le dossier APP_UserManagement ce qui devrait lancer l'application
+4. Lancer "run_mon_app.py" qui se trouve dans le dossier APP_UserManagement ce qui devrait lancer l'application
 
 
 
